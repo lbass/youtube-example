@@ -54,9 +54,18 @@
         */
       }
 
-      function playVideo() {
+      function playFirstFrame() {
         player.seekTo(0, true);
         player.playVideo();
+      }
+
+      function playVideo() {
+        player.seekTo(player.getCurrentTime(), true);
+        player.playVideo();
+      }
+
+      function pauseVideo() {
+        player.pauseVideo();
       }
 
       function stopVideo() {
@@ -86,9 +95,11 @@
 
     재생 제어
     <div>
-      <button class="control-button" onclick="playVideo()">동영상 재생</button>
-      <button class="control-button" onclick="stopVideo()">동영상 정지</button>
-      <button class="control-button" onclick="goFrame(true)">6초로 뒤로 이동</button>
+      <button class="control-button" onclick="playFirstFrame()">처음부터</button>
+      <button class="control-button" onclick="playVideo()">재생</button>
+      <button class="control-button" onclick="stopVideo()">정지</button>
+      <button class="control-button" onclick="pauseVideo()">일시 정지</button>
+      <button class="control-button" onclick="goFrame(true)">6초뒤로</button>
     </div>
     
     재생 속도 변경
