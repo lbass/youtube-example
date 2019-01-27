@@ -2,19 +2,101 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <style>
+      .control-button {
+        height: 30px;
+        width: 100px;
+        font-size: 12px;
+      }
+      .play-rate-button {
+        height: 30px;
+        width: 80px;
+        font-size: 12px;
+      }
+    </style>
     <title>YouTube-Api-Examlple</title>
-  </head>
-  <body>
-    <div id="root" style="text-align: center; margin-top: 80px;">
-        YouTube-Api-Examlple<br><br>
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
 
-        <iframe id="ytplayer" type="text/html" width="640" height="360"
-          src="http://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com"
-        frameborder="0"/>
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '360',
+          width: '640',
+          videoId: 'M7lc1UVf-VE',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        console.log('player ready');
+        // event.target.playVideo();
+      }
+
+      var done = false;
+      function onPlayerStateChange(event) {
+        console.log('onPlayerStateChange');
+        /*
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+        */
+      }
+
+      function playVideo() {
+        player.seekTo(0, true);
+        player.playVideo();
+      }
+
+      function stopVideo() {
+        player.stopVideo();
+      }
+
+      function goFrame(allowSeekAhead) {
+        player.seekTo(player.getCurrentTime() + 6, allowSeekAhead);
+        // setTimeout(()=> player.pauseVideo(), 1000);
+      }
+
+      function setPlayBackRate(suggestedRate) {
+        // 0.25, 0.5, 1, 1.5
+        player.setPlaybackRate(suggestedRate);
+      }
+
+    </script>
+    </script>
+  </head>
+  <body style="text-align: center; margin-top: 80px;">
+    <div id="root">
+        YouTube-Api-Examlple<br><br>
+    </div>
+    <div id="player">
+    </div>
+    <br><br>
+
+    재생 제어
+    <div>
+      <button class="control-button" onclick="playVideo()">동영상 재생</button>
+      <button class="control-button" onclick="stopVideo()">동영상 정지</button>
+      <button class="control-button" onclick="goFrame(true)">6초로 뒤로 이동</button>
+    </div>
+    
+    재생 속도 변경
+    <div>
+      <button class="play-rate-button" onclick="setPlayBackRate(0.25)">0.25</button>
+      <button class="play-rate-button" onclick="setPlayBackRate(0.5)">0.5</button>
+      <button class="play-rate-button" onclick="setPlayBackRate(1)">1</button>
+      <button class="play-rate-button" onclick="setPlayBackRate(1.5)">1.5</button>
     </div>
   </body>
 </html>
